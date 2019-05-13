@@ -7,7 +7,9 @@ data class GameStatsData(val startingStepCount: Int,
                          val currentStepCount: Int,
                          val undoBoards: StackKt<String>,
                          val totalGames: Int,
-                         val totalWins: Int)
+                         val totalWins: Int) {
+    val firstColor = undoBoards.peek().substring(5).take(1).toInt()
+}
 
 fun GameStatsData.toBase64String(): String = Base64.encodeToString(
     GameStatsProto.GameStats.newBuilder()

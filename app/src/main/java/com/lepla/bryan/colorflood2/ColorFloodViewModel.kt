@@ -1,6 +1,6 @@
 package com.lepla.bryan.colorflood2
 
-//import android.util.Log
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -27,9 +27,9 @@ class ColorFloodViewModel : ViewModel() {
     //    .doOnNext{ Log.d(TAG, "sharableWhenBoardChanged got theBoardHasChanged") }
     fun whenBoardChanged(): Observable<String> = sharableWhenBoardChanged
     private val whenGameIsWon = whenBoardChanged()
-    //    .doOnNext{ Log.d(TAG, "whenGameIsWon got whenBoardChanged") }
+        .doOnNext{ Log.d(TAG, "whenGameIsWon got whenBoardChanged") }
         .filter(ColorFloodModel::isCompleted).map{true}
-    //    .doOnNext{ Log.d(TAG, "game won")}
+        .doOnNext{ Log.d(TAG, "game won")}
 
     // This subject is because this data is initialized before Activity gets a change to subscribe to
     // the on step count observable. So, the initial value never gets to the activity.
@@ -37,12 +37,11 @@ class ColorFloodViewModel : ViewModel() {
     private val sharableStepCountChanged = publishStepCountChanged.share()
     fun whenStepCountChanged(): Observable<Int> = sharableStepCountChanged
     private val whenGameIsLost = whenStepCountChanged()
-    //    .doOnNext{ Log.d(TAG, "whenGameIsLost got whenStepCountChanged(): $it")}
+        .doOnNext{ Log.d(TAG, "whenGameIsLost got whenStepCountChanged(): $it")}
         .filter{it == 0}.map{false}
-    //    .doOnNext{ Log.d(TAG, "game lost")}
+        .doOnNext{ Log.d(TAG, "game lost")}
 
     private var data : GameStatsData = defaultData
-
     fun setSavedGame(savedData: String) = dataChangedPublishSubject.onNext(GameStatsSingleton.initialize(savedData, defaultData))
 
     fun init(
@@ -50,6 +49,7 @@ class ColorFloodViewModel : ViewModel() {
         whenStartGame: Observable<Pair<Boolean, StartGame>>
     ) {
         subscriptions.add(whenColorClicked
+            .filter{it != data.firstColor}
             .map{ColorFloodModel.applyColor(data.undoBoards.peek(), it)}
             .subscribe{
                 data.undoBoards.push(it)
@@ -68,6 +68,7 @@ class ColorFloodViewModel : ViewModel() {
     }
 
     private fun howToRestart(p:Pair<Boolean, StartGame>) {
+        setWonLostObservable()
         when (p.second) {
             is NewGame -> startNewGame(p.first, 22)
             is RestartGame -> restartGame()
@@ -105,7 +106,7 @@ class ColorFloodViewModel : ViewModel() {
 
     @Suppress("UNUSED_PARAMETER")
     private fun restartGame() {
-        val firstBoard = StackKt(data.undoBoards.toList().last())
+        val firstBoard = StackKt(data.undoBoards.toList().first())
 
         dataChangedPublishSubject.onNext(GameStatsData(data.startingStepCount, data.startingStepCount,
             firstBoard, data.totalGames+1, data.totalWins))
@@ -125,6 +126,6 @@ class ColorFloodViewModel : ViewModel() {
     companion object {
         private fun defaultGame(rows: Int, cols: Int, colors: Int) =
             encode((1..rows).map{(1..cols).map{(Math.random()*colors.toFloat()).toInt()}}, colors)
-        //private val TAG = ColorFloodViewModel::class.java.simpleName
+        private val TAG = ColorFloodViewModel::class.java.simpleName
     }
 }

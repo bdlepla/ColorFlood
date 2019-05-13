@@ -24,20 +24,20 @@ class ColorFloodSelectView : View {
         .observeOn(AndroidSchedulers.mainThread())
         .map {
             when {
-                isPortrait() -> it.x * paintCount() / width
-                else -> paintCount() - (it.y * paintCount() / height) // because painting is reversed in landscape
+                isPortrait() -> it.x * paintCount / width
+                else -> paintCount - (it.y * paintCount / height) // because painting is reversed in landscape
             }.toInt()
         }
 
     private fun isPortrait() = width > height // this is comparing the size of this view, not the whole screen
-    private fun paintCount() = paints.count()
+    private var paintCount = paints.count()
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
         radius = when {
-            isPortrait() -> Math.min(width / paintCount(), height)/2
-            else         -> Math.min(height / paintCount(), width)/2
+            isPortrait() -> Math.min(width / paintCount, height)/2
+            else         -> Math.min(height / paintCount, width)/2
         }
     }
 
