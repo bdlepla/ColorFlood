@@ -1,0 +1,14 @@
+ 
+syntax = "proto3";
+option java_package = "com.lepla.bryan.colorflood2";
+option java_outer_classname = "GameStatsProto";
+
+message GameStats {
+    int32 startingStepCount = 1; // the step count in effect at the beginning of the current game
+    int32 currentStepCount = 2; // the current steps left in this game
+    repeated string undoBoardStack = 3; // the collection of board representations to use for undo;
+                                        //the very bottom is the starting board
+                                        // the very top is current board
+    int32 totalGames = 4;
+    int32 totalWins = 5;
+}
