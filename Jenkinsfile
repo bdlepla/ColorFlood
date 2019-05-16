@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                sh './gradlew assembleDebug'
+                archiveArtifacts artifacts: '**/debug/**/*.apk', fingerprint: true 
             }
         }
         stage('Test') {
