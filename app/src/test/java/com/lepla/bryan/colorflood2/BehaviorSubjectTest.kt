@@ -8,8 +8,7 @@ import io.reactivex.subjects.BehaviorSubject
 class BehaviorSubjectTest : StringSpec({
     "ShouldHaveDefaultValue" {
         val subject = BehaviorSubject.createDefault(1)
-        var observable = subject
-        fun defaultBehavior() = observable
+        fun defaultBehavior() = subject
         var wow2 = defaultBehavior().subscribe({
                 it.shouldBe(1)
             }, {
