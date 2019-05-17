@@ -40,7 +40,7 @@ protobuf {
     plugins {
         javalite {
             // Download from repositories
-            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0@'
         }
     }
 
