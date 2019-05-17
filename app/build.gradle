@@ -37,6 +37,10 @@ android {
 protobuf {
     generatedFilesBaseDir = "$projectDir/src/generated"
     // Configure the protoc executable
+    protoc {
+        // Download from repositories
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
     plugins {
         javalite {
             // Download from repositories
