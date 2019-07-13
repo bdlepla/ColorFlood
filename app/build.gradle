@@ -49,6 +49,8 @@ protobuf {
     }
 
     generateProtoTasks {
+         mkdir(project.buildDir.path +'/extracted-include-protos/main')
+
         all().each { task ->
             task.plugins {
                 javalite { }
