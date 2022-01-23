@@ -15,7 +15,7 @@ fun MotionEvent.isDown() = isAction(MotionEvent.ACTION_DOWN)
 
 fun String.chunksOf(number:Int): List<String> {
     fun String.doChunksOf(chunkSize: Int): List<String> {
-        return when (val num = Math.min(chunkSize, this.length)) {
+        return when (val num = kotlin.math.min(chunkSize, this.length)) {
             0 -> emptyList()
             else -> listOf(this.take(num)) + this.drop(num).doChunksOf(num)
         }

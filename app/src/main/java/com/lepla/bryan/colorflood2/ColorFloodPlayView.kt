@@ -55,8 +55,8 @@ class ColorFloodPlayView: View {
     }
 
     override fun onDraw(canvas: Canvas) {
-        for (row in 0 until rows) {
-            for (col in 0 until cols) {
+        (0 until rows).forEach {row ->
+            (0 until cols).forEach {col ->
                 canvas.drawRect(col*blockWidth,
                     row*blockHeight,
                     (col+1)*blockWidth,

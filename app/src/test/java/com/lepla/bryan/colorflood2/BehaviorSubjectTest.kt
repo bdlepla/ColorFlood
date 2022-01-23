@@ -1,18 +1,18 @@
 package com.lepla.bryan.colorflood2
 
-import io.kotlintest.fail
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import org.junit.Test
+import org.junit.Assert.fail
 import io.reactivex.subjects.BehaviorSubject
 
-class BehaviorSubjectTest : StringSpec({
-    "ShouldHaveDefaultValue" {
+class BehaviorSubjectTests {
+    @Test
+    fun shouldHaveDefaultValue() {
         val subject = BehaviorSubject.createDefault(1)
         fun defaultBehavior() = subject
         var wow2 = defaultBehavior().subscribe({
-                it.shouldBe(1)
-            }, {
+            assert(it == 1)
+        }, {
             fail(it.message!!)
         })
     }
-})
+}

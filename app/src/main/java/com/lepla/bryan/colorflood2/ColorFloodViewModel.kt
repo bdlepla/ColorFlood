@@ -31,7 +31,7 @@ class ColorFloodViewModel : ViewModel() {
         .filter(ColorFloodModel::isCompleted).map{true}
         .doOnNext{ Log.d(TAG, "game won")}
 
-    // This subject is because this data is initialized before Activity gets a change to subscribe to
+    // This subject is because this data is initialized before Activity gets a chance to subscribe to
     // the on step count observable. So, the initial value never gets to the activity.
     private val publishStepCountChanged: BehaviorSubject<Int> = BehaviorSubject.createDefault(0)
     private val sharableStepCountChanged = publishStepCountChanged.share()

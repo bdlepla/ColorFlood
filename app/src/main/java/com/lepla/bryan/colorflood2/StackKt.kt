@@ -1,18 +1,16 @@
 package com.lepla.bryan.colorflood2
 
-import java.util.*
-
 class StackKt<T>()  {
-    private val _stack = Stack<T>()
+    private val data = mutableListOf<T>()
 
-    constructor(list: List<T>) : this() { list.forEach {_stack.push(it)} }
+    constructor(list: List<T>) : this() { list.forEach {data.add(it)} }
 
-    constructor(elem : T) : this() { _stack.push(elem) }
+    constructor(elem : T) : this() { data.add(elem) }
 
-    //fun pop() = _stack.pop()
-    fun peek() = _stack.peek()!!
-    fun push(elem: T) = _stack.push(elem)!!
-    //fun isEmpty() = _stack.isEmpty()
-    //fun clear() = _stack.clear()
-    fun toList() = _stack.toList()
+    fun pop() = data.removeLast()
+    fun peek() = data.last()!!
+    fun push(elem: T) = data.add(elem)!!
+    fun isEmpty() = data.isEmpty()
+    fun clear() = data.clear()
+    fun toList() = data.toList()
 }

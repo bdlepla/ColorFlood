@@ -11,7 +11,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:fullBackupContent="@xml/my_backup_rules">
-        <activity android:name=".ColorFloodActivity">
+        <activity android:name=".ColorFloodActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

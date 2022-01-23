@@ -3,24 +3,27 @@ package com.lepla.bryan.colorflood2
 import android.content.Context
 
 import android.os.Bundle
-//import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProviders
+import com.lepla.bryan.colorflood2.databinding.ActivityColorFloodBinding
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.activity_color_flood.*
 
 class ColorFloodActivity : AppCompatActivity() {
 
     private lateinit var gameViewModel: ColorFloodViewModel
+    private lateinit var binding: ActivityColorFloodBinding
 
     private val subscriptions = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        binding = ActivityColorFloodBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         val savedGameData = savedInstanceState
             ?.getString(BOARD_STATE)
             .doIfEmpty {
@@ -29,14 +32,14 @@ class ColorFloodActivity : AppCompatActivity() {
                     ?: ""
             }
 
-        setContentView(R.layout.activity_color_flood)
-        gameViewModel = ViewModelProviders.of(this).get(ColorFloodViewModel::class.java)
-        gameViewModel.init(colorFloodSelectView.whenColorClicked(), whenStartGame)
+
+        gameViewModel = ViewModelProviders.of(this)[ColorFloodViewModel::class.java]
+        gameViewModel.init(binding.colorFloodSelectView.whenColorClicked(), whenStartGame)
         subscriptions.add(gameViewModel.whenStepCountChanged()
         //    .doOnNext { Log.d(TAG, "when step count change: $it") }
             .subscribe(::updateTitleForStepCount))
         subscriptions.add(gameViewModel.whenDataChanged().subscribe(::saveData))
-        colorFloodPlayView.initialize(gameViewModel.whenBoardChanged())
+        binding.colorFloodPlayView.initialize(gameViewModel.whenBoardChanged())
         subscriptions.add(gameViewModel.whenGameCompleted().subscribe(::gameCompleted))
         gameViewModel.setSavedGame(savedGameData)
     }
@@ -51,10 +54,7 @@ class ColorFloodActivity : AppCompatActivity() {
     }
 
     private fun saveData(data: GameStatsData) {
-        getPreferences(Context.MODE_PRIVATE)
-            .edit()
-            .putString(BOARD_STATE, data.toBase64String())
-            .apply()
+        getPreferences(Context.MODE_PRIVATE).edit(true) {putString(BOARD_STATE, data.toBase64String())}
     }
 
     private val startGameSubject : PublishSubject<Pair<Boolean, StartGame>> = PublishSubject.create()
@@ -80,7 +80,6 @@ class ColorFloodActivity : AppCompatActivity() {
     }
 
     companion object {
-        //private val TAG = ColorFloodActivity::class.java.simpleName
         const val BOARD_STATE = "BoardState"
     }
 }

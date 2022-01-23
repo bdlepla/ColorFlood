@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlin.math.min
 
 class ColorFloodSelectView : View {
     constructor(context: Context): super(context)
@@ -18,7 +19,7 @@ class ColorFloodSelectView : View {
         Color.GREEN, Color.LTGRAY, Color.DKGRAY)
         .map(::createPaint)
 
-    private var radius = Math.min(width, height) / 2
+    private var radius = min(width, height) / 2
 
     fun whenColorClicked(): Observable<Int> = this.touchDown()
         .observeOn(AndroidSchedulers.mainThread())
@@ -36,8 +37,8 @@ class ColorFloodSelectView : View {
         super.onSizeChanged(w, h, oldw, oldh)
 
         radius = when {
-            isPortrait() -> Math.min(width / paintCount, height)/2
-            else         -> Math.min(height / paintCount, width)/2
+            isPortrait() -> min(width / paintCount, height) /2
+            else         -> min(height / paintCount, width) /2
         }
     }
 

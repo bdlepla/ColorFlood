@@ -1,37 +1,36 @@
 package com.lepla.bryan.colorflood2
 
-import io.kotlintest.shouldBe
-import io.kotlintest.specs.StringSpec
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
-class StringTests : StringSpec({
-
-    "Groups of Test" {
+class StringTests {
+    @Test
+    fun `Groups of Test`() {
         val str = "012345678901"
-        val expected = str.chunksOf(3)
-        expected.count().shouldBe(4)
-        expected[0].shouldBe("012")
-        expected[2].shouldBe("678")
+        val actual = str.chunksOf(3)
+        val expected = 4
+        assertEquals(expected, actual.count())
+
+        val actual0 = actual[0]
+        val expected0 = "012"
+        assertEquals(expected0, actual0)
+
+        val actual1 = actual[1]
+        val expected1 = "345"
+        assertEquals(expected1, actual1)
     }
 
-    "StringTo2dArrayAndBack" {
+    @Test
+    fun `String To 2d Array And Back`() {
         val str = "012345678901234"
-        val wow = str.to2dIntList(5)
-        wow[0].shouldBe(listOf(0, 1, 2, 3, 4))
-        val actual = wow.joinToString()
-        actual.shouldBe(str)
+        val twoDIntList = str.to2dIntList(5)
+
+        val actual1 = twoDIntList[1].joinToString("")
+        val expected1 = "56789"
+        assertEquals(expected1, actual1)
+
+        val actual = twoDIntList.joinToString()
+        assertEquals(str, actual)
     }
 
-    "MyTest" {
-        val num = 3
-        val numStr = num.toString()
-        val actualNum = numStr.toInt()
-        actualNum.shouldBe(num)
-
-        val numList = listOf(3, 4, 5, 6, 7)
-        val numStr2 = numList.joinToString("")
-        numStr2.shouldBe("34567")
-
-        val backToList = numStr2.map { it.toString().toInt() }
-        backToList.shouldBe(numList)
-    }
-})
+}
